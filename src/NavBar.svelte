@@ -1,3 +1,16 @@
+<script>
+    import { createEventDispatcher} from 'svelte';
+
+    const dispatch = createEventDispatcher();
+
+    function getSeasonalAnimes(){
+        dispatch('getSeasonalAnimes');
+    }
+    function getTopAnimes(){
+        dispatch('getTopAnimes');
+    }
+</script>
+
 <nav class="navbar">
     <ul class="navbar-nav">
         <li class="logo">
@@ -6,12 +19,12 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link" on:click={getTopAnimes}>
                 <span class="link-text">Top Anime</span>
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link" on:click={getSeasonalAnimes}>
                 <span class="link-text">Seasonal</span>
             </a>
         </li>

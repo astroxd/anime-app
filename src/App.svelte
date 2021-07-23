@@ -1,18 +1,69 @@
 <script>
 	import NavBar from './NavBar.svelte'
+	import SearchBar from './SearchBar.svelte'
+	import AnimeList from './AnimeList.svelte'
+
+	let animes = [];	
+
+
+
+	async function getTopAnimes(){
+		animes = [];
+		const data = await fetch(`https://api.jikan.moe/v3/top/anime/1/bypopularity`)
+					.then(res => res.json())
+					.then(data => {return data.top});
+				
+		animes = data.map(anime => {
+			return {
+					id: anime.mal_id, 
+					title: anime.title, 
+					cover: anime.image_url, 
+					url:anime.url
+					}
+				});
+
+		return animes;
+	}
+
+	async function getSeasonalAnimes(){
+		console.log('caca');
+
+		animes = [];
+		const data = await fetch(`https://api.jikan.moe/v3/search/anime?q=&genre=1,10&order_by=score&sort=desc`)
+					.then(res => res.json())
+					.then(data => data.results);
+				
+		animes = data.map(anime => {
+			return {
+					id: anime.mal_id, 
+					title: anime.title, 
+					cover: anime.image_url, 
+					url:anime.url
+					}
+				});
+
+	}
+
+	getTopAnimes();
+
+
 </script>
 
+<NavBar on:getTopAnimes={getTopAnimes} on:getSeasonalAnimes={getSeasonalAnimes}/>
 <main>
-	<!-- <Testbar/> -->
-	<NavBar/>
-	<div class="main-content">
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio saepe nemo sit quibusdam ipsum soluta, ut nostrum voluptatem porro doloribus minima perferendis ratione vel natus recusandae dolores necessitatibus temporibus veritatis veniam praesentium ducimus laudantium. Consequuntur beatae odio labore amet possimus! Doloribus consectetur, perferendis praesentium maxime explicabo beatae dolorum pariatur, voluptatem aliquam delectus labore, exercitationem architecto? Sequi cum dicta fugiat quibusdam iusto error ipsum reprehenderit quidem dolorem dolor, sit nihil enim earum doloremque voluptatem molestiae! Fuga suscipit sint illum sunt architecto quod provident dolorum. Modi dolores similique cum aliquam, animi culpa eum illo sunt voluptatibus molestias deserunt unde blanditiis? Pariatur, ab!</p>
-	</div>
+	<SearchBar/>
+	<AnimeList animes={animes}/>
+	<!-- {#await getTopAnimes()}
+		loading
+	{:then data}
+		<AnimeList animes={data}/>
+	{/await} -->
 </main>
 
 <style>
-	.main-content{
-  		margin-left: 8rem;
+	main{
+		margin-left: 8rem;
   		padding: 1rem;
 	}
+
 </style>
