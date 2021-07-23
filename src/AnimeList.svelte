@@ -14,23 +14,22 @@
     main{
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
     }
 
-    /*TODO Check anime card style  */
-
     /* Small Screen */
-    @media only screen and (max-width: 600px){
+    /* @media only screen and (max-width: 600px){
         main{
             justify-content: center;
         }
-    }
+    } */
 
     /* Large Screen */
-    @media only screen and (min-width: 600px){
+    /* @media only screen and (min-width: 600px){
         main{
             justify-content: start;
         }
-    }
+    } */
 
 
 </style>

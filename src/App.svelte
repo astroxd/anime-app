@@ -2,13 +2,16 @@
 	import NavBar from './NavBar.svelte'
 	import SearchBar from './SearchBar.svelte'
 	import AnimeList from './AnimeList.svelte'
+	import SeasonalAnimeList from './SeasonalAnimeList.svelte'
 
-	let animes = [];	
-
+	let animes = [];
+	let seasons = [];	
+	let page = 'topAnimes';
 
 
 	async function getTopAnimes(){
 		animes = [];
+		page = 'topAnimes';	
 		const data = await fetch(`https://api.jikan.moe/v3/top/anime/1/bypopularity`)
 					.then(res => res.json())
 					.then(data => {return data.top});
@@ -21,26 +24,26 @@
 					url:anime.url
 					}
 				});
-
+		
+			
 		return animes;
 	}
 
 	async function getSeasonalAnimes(){
-		console.log('caca');
-
-		animes = [];
-		const data = await fetch(`https://api.jikan.moe/v3/search/anime?q=&genre=1,10&order_by=score&sort=desc`)
-					.then(res => res.json())
-					.then(data => data.results);
+		seasons = [];
+		const data = await fetch(`https://api.jikan.moe/v3/season/archive`)
+					.then(res => {
+						
+						return res.json()})
+					.then(data => data.archive);
 				
-		animes = data.map(anime => {
+		seasons = data.map(season => {
 			return {
-					id: anime.mal_id, 
-					title: anime.title, 
-					cover: anime.image_url, 
-					url:anime.url
+					year: season.year,
+					seasons: season.seasons,
 					}
 				});
+		page = 'seasonalAnimes';
 
 	}
 
@@ -49,15 +52,16 @@
 
 </script>
 
-<NavBar on:getTopAnimes={getTopAnimes} on:getSeasonalAnimes={getSeasonalAnimes}/>
+<NavBar on:getTopAnimes={getTopAnimes} 
+		on:getSeasonalAnimes={getSeasonalAnimes}
+	/>
 <main>
 	<SearchBar/>
-	<AnimeList animes={animes}/>
-	<!-- {#await getTopAnimes()}
-		loading
-	{:then data}
-		<AnimeList animes={data}/>
-	{/await} -->
+	{#if page === 'topAnimes'}
+		<AnimeList animes={animes}/>
+	{:else if page === 'seasonalAnimes'}
+		<SeasonalAnimeList AllSeasons={seasons}/>
+	{/if}
 </main>
 
 <style>

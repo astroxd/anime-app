@@ -3,6 +3,8 @@
     export let title;
     export let cover;
     export let url;
+
+
 </script>
 
 
@@ -16,9 +18,8 @@
 
 <style>
     .anime-card{
-        width: 200px;
+        width: 200px; 
         max-width: 200px;
-
         margin: 1rem;
     }
     .content{
