@@ -47,6 +47,33 @@
 
 	}
 
+
+	async function searchAnime(event){
+		animes = [];
+		page = 'topAnimes';	
+		let query = event.detail.query;
+		if(query.length < 3){
+			getTopAnimes();
+		}else{
+
+		
+		const data = await fetch(`https://api.jikan.moe/v3/search/anime?q=${query}&order_by=title&sort=desc&page=1`)
+					.then(res => {return res.json()})
+					.then(data => data.results);
+		
+		animes = data.map(anime =>{
+			return {
+				id: anime.mal_id, 
+				title: anime.title, 
+				cover: anime.image_url, 
+				url:anime.url
+				}
+			})
+		}
+
+	}
+
+
 	getTopAnimes();
 
 
@@ -56,7 +83,7 @@
 		on:getSeasonalAnimes={getSeasonalAnimes}
 	/>
 <main>
-	<SearchBar/>
+	<SearchBar on:searchAnime={searchAnime}/>
 	{#if page === 'topAnimes'}
 		<AnimeList animes={animes}/>
 	{:else if page === 'seasonalAnimes'}
