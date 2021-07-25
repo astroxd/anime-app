@@ -104,7 +104,7 @@
   on:getSeasonalAnimes={getSeasonalAnimes}
 />
 <main>
-  <SearchBar on:searchAnime={searchAnime} />
+  <!-- <SearchBar on:searchAnime={searchAnime} />
   {#if page === "topAnimes"}
     <AnimeList {animes} />
   {:else if page === "seasonalAnimes"}
@@ -116,7 +116,7 @@
       on:getTopAnimes={getTopAnimes}
       on:searchByTag={searchAnime}
     />
-  {/if}
+  {/if} -->
 </main>
 
 <style>
